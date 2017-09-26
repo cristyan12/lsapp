@@ -1,0 +1,351 @@
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mindex b6a4b86..93a29bd 100644[m
+[1m--- a/.gitignore[m
+[1m+++ b/.gitignore[m
+[36m@@ -1,6 +1,7 @@[m
+ /node_modules[m
+ /public/hot[m
+ /public/storage[m
+[32m+[m[32mpublic/vendor[m
+ /storage/*.key[m
+ /vendor[m
+ /.idea[m
+[1mdiff --git a/app/Http/Controllers/PostsController.php b/app/Http/Controllers/PostsController.php[m
+[1mindex a2aaccf..19f6a07 100644[m
+[1m--- a/app/Http/Controllers/PostsController.php[m
+[1m+++ b/app/Http/Controllers/PostsController.php[m
+[36m@@ -25,7 +25,7 @@[m [mclass PostsController extends Controller[m
+      */[m
+     public function create()[m
+     {[m
+[31m-        //[m
+[32m+[m[32m        return view('posts.create');[m
+     }[m
+ [m
+     /**[m
+[36m@@ -36,7 +36,17 @@[m [mclass PostsController extends Controller[m
+      */[m
+     public function store(Request $request)[m
+     {[m
+[31m-        //[m
+[32m+[m[32m        $this->validate($request, [[m
+[32m+[m[32m            'title' => 'required',[m
+[32m+[m[32m            'body' => 'required'[m
+[32m+[m[32m        ]);[m
+[32m+[m
+[32m+[m[32m        $post = new Post;[m
+[32m+[m[32m        $post->title = $request->input('title');[m
+[32m+[m[32m        $post->body = $request->input('body');[m
+[32m+[m[32m        $post->save();[m
+[32m+[m
+[32m+[m[32m        return redirect('/posts')->with('success');[m
+     }[m
+ [m
+     /**[m
+[1mdiff --git a/composer.json b/composer.json[m
+[1mindex 6ba7fc2..38b04fc 100644[m
+[1m--- a/composer.json[m
+[1m+++ b/composer.json[m
+[36m@@ -8,7 +8,9 @@[m
+         "php": ">=7.0.0",[m
+         "fideloper/proxy": "~3.3",[m
+         "laravel/framework": "5.5.*",[m
+[31m-        "laravel/tinker": "~1.0"[m
+[32m+[m[32m        "laravel/tinker": "~1.0",[m
+[32m+[m[32m        "laravelcollective/html": "5.5.*",[m
+[32m+[m[32m        "unisharp/laravel-ckeditor": "^4.6"[m
+     },[m
+     "require-dev": {[m
+         "filp/whoops": "~2.0",[m
+[1mdiff --git a/composer.lock b/composer.lock[m
+[1mindex d683aab..f4b9e0b 100644[m
+[1m--- a/composer.lock[m
+[1m+++ b/composer.lock[m
+[36m@@ -4,7 +4,7 @@[m
+         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",[m
+         "This file is @generated automatically"[m
+     ],[m
+[31m-    "content-hash": "8f2120fa77d42a42b4210cdbe1c114e2",[m
+[32m+[m[32m    "content-hash": "7653dc631ecbec37186410fa25774c92",[m
+     "packages": [[m
+         {[m
+             "name": "dnoegel/php-xdg-base-dir",[m
+[36m@@ -599,6 +599,71 @@[m
+             "time": "2017-07-13T13:11:05+00:00"[m
+         },[m
+         {[m
+[32m+[m[32m            "name": "laravelcollective/html",[m
+[32m+[m[32m            "version": "v5.5.1",[m
+[32m+[m[32m            "source": {[m
+[32m+[m[32m                "type": "git",[m
+[32m+[m[32m                "url": "https://github.com/LaravelCollective/html.git",[m
+[32m+[m[32m                "reference": "2f6dc39ab3655724a615fe8a652d8b7f04fc9ac6"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "dist": {[m
+[32m+[m[32m                "type": "zip",[m
+[32m+[m[32m                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/2f6dc39ab3655724a615fe8a652d8b7f04fc9ac6",[m
+[32m+[m[32m                "reference": "2f6dc39ab3655724a615fe8a652d8b7f04fc9ac6",[m
+[32m+[m[32m                "shasum": ""[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "require": {[m
+[32m+[m[32m                "illuminate/http": "5.5.*",[m
+[32m+[m[32m                "illuminate/routing": "5.5.*",[m
+[32m+[m[32m                "illuminate/session": "5.5.*",[m
+[32m+[m[32m                "illuminate/support": "5.5.*",[m
+[32m+[m[32m                "illuminate/view": "5.5.*",[m
+[32m+[m[32m                "php": ">=7.0.0"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "require-dev": {[m
+[32m+[m[32m                "illuminate/database": "5.5.*",[m
+[32m+[m[32m                "mockery/mockery": "~0.9.4",[m
+[32m+[m[32m                "phpunit/phpunit": "~5.4"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "type": "library",[m
+[32m+[m[32m            "extra": {[m
+[32m+[m[32m                "laravel": {[m
+[32m+[m[32m                    "providers": [[m
+[32m+[m[32m                        "Collective\\Html\\HtmlServiceProvider"[m
+[32m+[m[32m                    ],[m
+[32m+[m[32m                    "aliases": {[m
+[32m+[m[32m                        "Form": "Collective\\Html\\FormFacade",[m
+[32m+[m[32m                        "Html": "Collective\\Html\\HtmlFacade"[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "autoload": {[m
+[32m+[m[32m                "psr-4": {[m
+[32m+[m[32m                    "Collective\\Html\\": "src/"[m
+[32m+[m[32m                },[m
+[32m+[m[32m                "files": [[m
+[32m+[m[32m                    "src/helpers.php"[m
+[32m+[m[32m                ][m
+[32m+[m[32m            },[m
+[32m+[m[32m            "notification-url": "https://packagist.org/downloads/",[m
+[32m+[m[32m            "license": [[m
+[32m+[m[32m                "MIT"[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "authors": [[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    "name": "Taylor Otwell",[m
+[32m+[m[32m                    "email": "taylorotwell@gmail.com"[m
+[32m+[m[32m                },[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    "name": "Adam Engebretson",[m
+[32m+[m[32m                    "email": "adam@laravelcollective.com"[m
+[32m+[m[32m                }[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "description": "HTML and Form Builders for the Laravel Framework",[m
+[32m+[m[32m            "homepage": "http://laravelcollective.com",[m
+[32m+[m[32m            "time": "2017-08-31T14:46:03+00:00"[m
+[32m+[m[32m        },[m
+[32m+[m[32m        {[m
+             "name": "league/flysystem",[m
+             "version": "1.0.41",[m
+             "source": {[m
+[36m@@ -2104,6 +2169,60 @@[m
+             "time": "2016-09-20T12:50:39+00:00"[m
+         },[m
+         {[m
+[32m+[m[32m            "name": "unisharp/laravel-ckeditor",[m
+[32m+[m[32m            "version": "4.6.2",[m
+[32m+[m[32m            "source": {[m
+[32m+[m[32m                "type": "git",[m
+[32m+[m[32m                "url": "https://github.com/UniSharp/laravel-ckeditor.git",[m
+[32m+[m[32m                "reference": "39a62df1383671327ac908177c7a3b68ea95be6e"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "dist": {[m
+[32m+[m[32m                "type": "zip",[m
+[32m+[m[32m                "url": "https://api.github.com/repos/UniSharp/laravel-ckeditor/zipball/39a62df1383671327ac908177c7a3b68ea95be6e",[m
+[32m+[m[32m                "reference": "39a62df1383671327ac908177c7a3b68ea95be6e",[m
+[32m+[m[32m                "shasum": ""[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "require": {[m
+[32m+[m[32m                "illuminate/support": "~5.0"[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "type": "library",[m
+[32m+[m[32m            "autoload": {[m
+[32m+[m[32m                "psr-4": {[m
+[32m+[m[32m                    "Unisharp\\Ckeditor\\": "./"[m
+[32m+[m[32m                }[m
+[32m+[m[32m            },[m
+[32m+[m[32m            "notification-url": "https://packagist.org/downloads/",[m
+[32m+[m[32m            "license": [[m
+[32m+[m[32m                "GPL-2.0+",[m
+[32m+[m[32m                "LGPL-2.1+",[m
+[32m+[m[32m                "MPL-1.1+"[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "authors": [[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    "name": "CKSource",[m
+[32m+[m[32m                    "homepage": "http://cksource.com"[m
+[32m+[m[32m                },[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    "name": "UniSharp Ltd. (Composer Package Maintainer)",[m
+[32m+[m[32m                    "homepage": "http://www.unisharp.com"[m
+[32m+[m[32m                }[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "description": "JavaScript WYSIWYG web text editor (for laravel).",[m
+[32m+[m[32m            "homepage": "http://ckeditor.com",[m
+[32m+[m[32m            "keywords": [[m
+[32m+[m[32m                "CKEditor",[m
+[32m+[m[32m                "editor",[m
+[32m+[m[32m                "fckeditor",[m
+[32m+[m[32m                "html",[m
+[32m+[m[32m                "javascript",[m
+[32m+[m[32m                "laravel",[m
+[32m+[m[32m                "richtext",[m
+[32m+[m[32m                "text",[m
+[32m+[m[32m                "wysiwyg"[m
+[32m+[m[32m            ],[m
+[32m+[m[32m            "time": "2017-02-03T17:31:13+00:00"[m
+[32m+[m[32m        },[m
+[32m+[m[32m        {[m
+             "name": "vlucas/phpdotenv",[m
+             "version": "v2.4.0",[m
+             "source": {[m
+[1mdiff --git a/config/app.php b/config/app.php[m
+[1mindex 7b5c7a7..2d21ab7 100644[m
+[1m--- a/config/app.php[m
+[1m+++ b/config/app.php[m
+[36m@@ -167,6 +167,8 @@[m [mreturn [[m
+         /*[m
+          * Package Service Providers...[m
+          */[m
+[32m+[m[32m        Collective\Html\HtmlServiceProvider::class,[m
+[32m+[m[32m        Unisharp\Ckeditor\ServiceProvider::class,[m
+ [m
+         /*[m
+          * Application Service Providers...[m
+[36m@@ -226,6 +228,9 @@[m [mreturn [[m
+         'Validator' => Illuminate\Support\Facades\Validator::class,[m
+         'View' => Illuminate\Support\Facades\View::class,[m
+ [m
+[32m+[m[32m        'Form' => Collective\Html\FormFacade::class,[m
+[32m+[m[32m        'Html' => Collective\Html\HtmlFacade::class,[m
+[32m+[m
+     ],[m
+ [m
+ ];[m
+[1mdiff --git a/public/vendor/unisharp/laravel-ckeditor/adapters/jquery.js b/public/vendor/unisharp/laravel-ckeditor/adapters/jquery.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..86cb458[m
+[1m--- /dev/null[m
+[1m+++ b/public/vendor/unisharp/laravel-ckeditor/adapters/jquery.js[m
+[36m@@ -0,0 +1,10 @@[m
+[32m+[m[32m﻿/*[m
+[32m+[m[32m Copyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.[m
+[32m+[m[32m For licensing, see LICENSE.md or http://ckeditor.com/license[m
+[32m+[m[32m*/[m
+[32m+[m[32m(function(a){if("undefined"==typeof a)throw Error("jQuery should be loaded before CKEditor jQuery adapter.");if("undefined"==typeof CKEDITOR)throw Error("CKEditor should be loaded before CKEditor jQuery adapter.");CKEDITOR.config.jqueryOverrideVal="undefined"==typeof CKEDITOR.config.jqueryOverrideVal?!0:CKEDITOR.config.jqueryOverrideVal;a.extend(a.fn,{ckeditorGet:function(){var a=this.eq(0).data("ckeditorInstance");if(!a)throw"CKEditor is not initialized yet, use ckeditor() with a callback.";return a},[m
+[32m+[m[32mckeditor:function(g,d){if(!CKEDITOR.env.isCompatible)throw Error("The environment is incompatible.");if(!a.isFunction(g)){var m=d;d=g;g=m}var k=[];d=d||{};this.each(function(){var b=a(this),c=b.data("ckeditorInstance"),f=b.data("_ckeditorInstanceLock"),h=this,l=new a.Deferred;k.push(l.promise());if(c&&!f)g&&g.apply(c,[this]),l.resolve();else if(f)c.once("instanceReady",function(){setTimeout(function(){c.element?(c.element.$==h&&g&&g.apply(c,[h]),l.resolve()):setTimeout(arguments.callee,100)},0)},[m
+[32m+[m[32mnull,null,9999);else{if(d.autoUpdateElement||"undefined"==typeof d.autoUpdateElement&&CKEDITOR.config.autoUpdateElement)d.autoUpdateElementJquery=!0;d.autoUpdateElement=!1;b.data("_ckeditorInstanceLock",!0);c=a(this).is("textarea")?CKEDITOR.replace(h,d):CKEDITOR.inline(h,d);b.data("ckeditorInstance",c);c.on("instanceReady",function(d){var e=d.editor;setTimeout(function(){if(e.element){d.removeListener();e.on("dataReady",function(){b.trigger("dataReady.ckeditor",[e])});e.on("setData",function(a){b.trigger("setData.ckeditor",[m
+[32m+[m[32m[e,a.data])});e.on("getData",function(a){b.trigger("getData.ckeditor",[e,a.data])},999);e.on("destroy",function(){b.trigger("destroy.ckeditor",[e])});e.on("save",function(){a(h.form).submit();return!1},null,null,20);if(e.config.autoUpdateElementJquery&&b.is("textarea")&&a(h.form).length){var c=function(){b.ckeditor(function(){e.updateElement()})};a(h.form).submit(c);a(h.form).bind("form-pre-serialize",c);b.bind("destroy.ckeditor",function(){a(h.form).unbind("submit",c);a(h.form).unbind("form-pre-serialize",[m
+[32m+[m[32mc)})}e.on("destroy",function(){b.removeData("ckeditorInstance")});b.removeData("_ckeditorInstanceLock");b.trigger("instanceReady.ckeditor",[e]);g&&g.apply(e,[h]);l.resolve()}else setTimeout(arguments.callee,100)},0)},null,null,9999)}});var f=new a.Deferred;this.promise=f.promise();a.when.apply(this,k).then(function(){f.resolve()});this.editor=this.eq(0).data("ckeditorInstance");return this}});CKEDITOR.config.jqueryOverrideVal&&(a.fn.val=CKEDITOR.tools.override(a.fn.val,function(g){return function(d){if(arguments.length){var m=[m
+[32m+[m[32mthis,k=[],f=this.each(function(){var b=a(this),c=b.data("ckeditorInstance");if(b.is("textarea")&&c){var f=new a.Deferred;c.setData(d,function(){f.resolve()});k.push(f.promise());return!0}return g.call(b,d)});if(k.length){var b=new a.Deferred;a.when.apply(this,k).done(function(){b.resolveWith(m)});return b.promise()}return f}var f=a(this).eq(0),c=f.data("ckeditorInstance");return f.is("textarea")&&c?c.getData():g.call(f)}}))})(window.jQuery);[m
+\ No newline at end of file[m
+[1mdiff --git a/public/vendor/unisharp/laravel-ckeditor/ckeditor.js b/public/vendor/unisharp/laravel-ckeditor/ckeditor.js[m
+[1mnew file mode 100644[m
+[1mindex 0000000..094757b[m
+[1m--- /dev/null[m
+[1m+++ b/public/vendor/unisharp/laravel-ckeditor/ckeditor.js[m
+[36m@@ -0,0 +1,1023 @@[m
+[32m+[m[32m﻿/*[m
+[32m+[m[32mCopyright (c) 2003-2017, CKSource - Frederico Knabben. All rights reserved.[m
+[32m+[m[32mFor licensing, see LICENSE.md or http://ckeditor.com/license[m
+[32m+[m[32m*/[m
+[32m+[m[32m(function(){window.CKEDITOR&&window.CKEDITOR.dom||(window.CKEDITOR||(window.CKEDITOR=function(){var a=/(^|.*[\\\/])ckeditor\.js(?:\?.*|;.*)?$/i,f={timestamp:"H0CF",version:"4.6.2 (Standard)",revision:"20af917",rnd:Math.floor(900*Math.random())+100,_:{pending:[],basePathSrcPattern:a},status:"unloaded",basePath:function(){var b=window.CKEDITOR_BASEPATH||"";if(!b)for(var c=document.getElementsByTagName("script"),f=0;f<c.length;f++){var d=c[f].src.match(a);if(d){b=d[1];break}}-1==b.indexOf(":/")&&"//"!=[m
+[32m+[m[32mb.slice(0,2)&&(b=0===b.indexOf("/")?location.href.match(/^.*?:\/\/[^\/]*/)[0]+b:location.href.match(/^[^\?]*\/(?:)/)[0]+b);if(!b)throw'The CKEditor installation path could not be automatically detected. Please set the global variable "CKEDITOR_BASEPATH" before creating editor instances.';return b}(),getUrl:function(a){-1==a.indexOf(":/")&&0!==a.indexOf("/")&&(a=this.basePath+a);this.timestamp&&"/"!=a.charAt(a.length-1)&&!/[&?]t=/.test(a)&&(a+=(0<=a.indexOf("?")?"\x26":"?")+"t\x3d"+this.timestamp);[m
+[32m+[m[32mreturn a},domReady:function(){function a(){try{document.addEventListener?(document.removeEventListener("DOMContentLoaded",a,!1),b()):document.attachEvent&&"complete"===document.readyState&&(document.detachEvent("onreadystatechange",a),b())}catch(d){}}function b(){for(var a;a=c.shift();)a()}var c=[];return function(d){function b(){try{document.documentElement.doScroll("left")}catch(g){setTimeout(b,1);return}a()}c.push(d);"complete"===document.readyState&&setTimeout(a,1);if(1==c.length)if(document.addEventListener)document.addEventListener("DOMContentLoaded",[m
+[32m+[m[32ma,!1),window.addEventListener("load",a,!1);else if(document.attachEvent){document.attachEvent("onreadystatechange",a);window.attachEvent("onload",a);d=!1;try{d=!window.frameElement}catch(k){}document.documentElement.doScroll&&d&&b()}}}()},b=window.CKEDITOR_GETURL;if(b){var c=f.getUrl;f.getUrl=function(a){return b.call(f,a)||c.call(f,a)}}return f}()),CKEDITOR.event||(CKEDITOR.event=function(){},CKEDITOR.event.implementOn=function(a){var f=CKEDITOR.event.prototype,b;for(b in f)null==a[b]&&(a[b]=f[b])},[m
+[32m+[m[32mCKEDITOR.event.prototype=function(){function a(a){var e=f(this);return e[a]||(e[a]=new b(a))}var f=function(a){a=a.getPrivate&&a.getPrivate()||a._||(a._={});return a.events||(a.events={})},b=function(a){this.name=a;this.listeners=[]};b.prototype={getListenerIndex:function(a){for(var b=0,f=this.listeners;b<f.length;b++)if(f[b].fn==a)return b;return-1}};return{define:function(b,e){var f=a.call(this,b);CKEDITOR.tools.extend(f,e,!0)},on:function(b,e,f,l,d){function h(a,g,d,h){a={name:b,sender:this,editor:a,[m
+[32m+[m[32mdata:g,listenerData:l,stop:d,cancel:h,removeListener:k};return!1===e.call(f,a)?!1:a.data}function k(){n.removeListener(b,e)}var g=a.call(this,b);if(0>g.getListenerIndex(e)){g=g.listeners;f||(f=this);isNaN(d)&&(d=10);var n=this;h.fn=e;h.priority=d;for(var v=g.length-1;0<=v;v--)if(g[v].priority<=d)return g.splice(v+1,0,h),{removeListener:k};g.unshift(h)}return{removeListener:k}},once:function(){var a=Array.prototype.slice.call(arguments),b=a[1];a[1]=function(a){a.removeListener();return b.apply(this,[m
+[32m+[m[32marguments)};return this.on.apply(this,a)},capture:function(){CKEDITOR.event.useCapture=1;var a=this.on.apply(this,arguments);CKEDITOR.event.useCapture=0;return a},fire:function(){var a=0,b=function(){a=1},m=0,l=function(){m=1};return function(d,h,k){var g=f(this)[d];d=a;var n=m;a=m=0;if(g){var v=g.listeners;if(v.length)for(var v=v.slice(0),t,w=0;w<v.length;w++){if(g.errorProof)try{t=v[w].call(this,k,h,b,l)}catch(p){}else t=v[w].call(this,k,h,b,l);!1===t?m=1:"undefined"!=typeof t&&(h=t);if(a||m)break}}h=[m
+[32m+[m[32mm?!1:"undefined"==typeof h?!0:h;a=d;m=n;return h}}(),fireOnce:function(a,b,m){b=this.fire(a,b,m);delete f(this)[a];return b},removeListener:function(a,b){var m=f(this)[a];if(m){var l=m.getListenerIndex(b);0<=l&&m.listeners.splice(l,1)}},removeAllListeners:function(){var a=f(this),b;for(b in a)delete a[b]},hasListeners:function(a){return(a=f(this)[a])&&0<a.listeners.length}}}()),CKEDITOR.editor||(CKEDITOR.editor=function(){CKEDITOR._.pending.push([this,arguments]);CKEDITOR.event.call(this)},CKEDITOR.editor.prototype.fire=[m
+[32m+[m[32mfunction(a,f){a in{instanceReady:1,loaded:1}&&(this[a]=!0);return CKEDITOR.event.prototype.fire.call(this,a,f,this)},CKEDITOR.editor.prototype.fireOnce=function(a,f){a in{instanceReady:1,loaded:1}&&(this[a]=!0);return CKEDITOR.event.prototype.fireOnce.call(this,a,f,this)},CKEDITOR.event.implementOn(CKEDITOR.editor.prototype)),CKEDITOR.env||(CKEDITOR.env=function(){var a=navigator.userAgent.toLowerCase(),f=a.match(/edge[ \/](\d+.?\d*)/),b=-1<a.indexOf("trident/"),b=!(!f&&!b),b={ie:b,edge:!!f,webkit:!b&&[m
+[32m+[m[32m-1<a.indexOf(" applewebkit/"),air:-1<a.indexOf(" adobeair/"),mac:-1<a.indexOf("macintosh"),quirks:"BackCompat"==document.compatMode&&(!document.documentMode||10>document.documentMode),mobile:-1<a.indexOf("mobile"),iOS:/(ipad|iphone|ipod)/.test(a),isCustomDomain:function(){if(!this.ie)return!1;var a=document.domain,b=window.location.hostname;return a!=b&&a!="["+b+"]"},secure:"https:"==location.protocol};b.gecko="Gecko"==navigator.product&&!b.webkit&&!b.ie;b.webkit&&(-1<a.indexOf("chrome")?b.chrome=[m
+[32m+[m[32m!0:b.safari=!0);var c=0;b.ie&&(c=f?parseFloat(f[1]):b.quirks||!document.documentMode?parseFloat(a.match(/msie (\d+)/)[1]):document.documentMode,b.ie9Compat=9==c,b.ie8Compat=8==c,b.ie7Compat=7==c,b.ie6Compat=7>c||b.quirks);b.gecko&&(f=a.match(/rv:([\d\.]+)/))&&(f=f[1].split("."),c=1E4*f[0]+100*(f[1]||0)+1*(f[2]||0));b.air&&(c=parseFloat(a.match(/ adobeair\/(\d+)/)[1]));b.webkit&&(c=parseFloat(a.match(/ applewebkit\/(\d+)/)[1]));b.version=c;b.isCompatible=!(b.ie&&7>c)&&!(b.gecko&&4E4>c)&&!(b.webkit&&[m
+[32m+[m[32m534>c);b.hidpi=2<=window.devicePixelRatio;b.needsBrFiller=b.gecko||b.webkit||b.ie&&10<c;b.needsNbspFiller=b.ie&&11>c;b.cssClass="cke_browser_"+(b.ie?"ie":b.gecko?"gecko":b.webkit?"webkit":"unknown");b.quirks&&(b.cssClass+=" cke_browser_quirks");b.ie&&(b.cssClass+=" cke_browser_ie"+(b.quirks?"6 cke_browser_iequirks":b.version));b.air&&(b.cssClass+=" cke_browser_air");b.iOS&&(b.cssClass+=" cke_browser_ios");b.hidpi&&(b.cssClass+=" cke_hidpi");return b}()),"unloaded"==CKEDITOR.status&&function(){CKEDITOR.event.implementOn(CKEDITOR);[m
+[32m+[m[32mCKEDITOR.loadFullCore=function(){if("basic_ready"!=CKEDITOR.status)CKEDITOR.loadFullCore._load=1;else{delete CKEDITOR.loadFullCore;var a=document.createElement("script");a.type="text/javascript";a.src=CKEDITOR.basePath+"ckeditor.js";document.getElementsByTagName("head")[0].appendChild(a)}};CKEDITOR.loadFullCoreTimeout=0;CKEDITOR.add=function(a){(this._.pending||(this._.pending=[])).push(a)};(function(){CKEDITOR.domReady(function(){var a=CKEDITOR.loadFullCore,f=CKEDITOR.loadFullCoreTimeout;a&&(CKEDITOR.status=[m
+[32m+[m[32m"basic_ready",a&&a._load?a():f&&setTimeout(function(){CKEDITOR.loadFullCore&&CKEDITOR.loadFullCore()},1E3*f))})})();CKEDITOR.status="basic_loaded"}(),"use strict",CKEDITOR.VERBOSITY_WARN=1,CKEDITOR.VERBOSITY_ERROR=2,CKEDITOR.verbosity=CKEDITOR.VERBOSITY_WARN|CKEDITOR.VERBOSITY_ERROR,CKEDITOR.warn=function(a,f){CKEDITOR.verbosity&CKEDITOR.VERBOSITY_WARN&&CKEDITOR.fire("log",{type:"warn",errorCode:a,additionalData:f})},CKEDITOR.error=function(a,f){CKEDITOR.verbosity&CKEDITOR.VERBOSITY_ERROR&&CKEDITOR.fire("log",[m
+[32m+[m[32m{type:"error",errorCode:a,additionalData:f})},CKEDITOR.on("log",function(a){if(window.console&&window.console.log){var f=console[a.data.type]?a.data.type:"log",b=a.data.errorCode;if(a=a.data.additionalData)console[f]("[CKEDITOR] Error code: "+b+".",a);else console[f]("[CKEDITOR] Error code: "+b+".");console[f]("[CKEDITOR] For more information about this error go to http://docs.ckeditor.com/#!/guide/dev_errors-section-"+b)}},null,null,999),CKEDITOR.dom={},function(){var a=[],f=CKEDITOR.env.gecko?"-moz-":[m
+[32m+[m[32mCKEDITOR.env.webkit?"-webkit-":CKEDITOR.env.ie?"-ms-":"",b=/&/g,c=/>/g,e=/</g,m=/"/g,l=/&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,d={lt:"\x3c",gt:"\x3e",amp:"\x26",quot:'"',nbsp:" ",shy:"­"},h=function(a,g){return"#"==g[0]?String.fromCharCode(parseInt(g.slice(1),10)):d[g]};CKEDITOR.on("reset",function(){a=[]});CKEDITOR.tools={arrayCompare:function(a,g){if(!a&&!g)return!0;if(!a||!g||a.length!=g.length)return!1;for(var d=0;d<a.length;d++)if(a[d]!=g[d])return!1;return!0},getIndex:function(a,g){for(var d=[m
+[32m+[m[32m0;d<a.length;++d)if(g(a[d]))return d;return-1},clone:function(a){var g;if(a&&a instanceof Array){g=[];for(var d=0;d<a.length;d++)g[d]=CKEDITOR.tools.clone(a[d]);return g}if(null===a||"object"!=typeof a||a instanceof String||a instanceof Number||a instanceof Boolean||a instanceof Date||a instanceof RegExp||a.nodeType||a.window===a)return a;g=new a.constructor;for(d in a)g[d]=CKEDITOR.tools.clone(a[d]);return g},capitalize:function(a,g){return a.charAt(0).toUpperCase()+(g?a.slice(1):a.slice(1).toLowerCase())},[m
+[32m+[m[32mextend:function(a){var g=arguments.length,d,b;"boolean"==typeof(d=arguments[g-1])?g--:"boolean"==typeof(d=arguments[g-2])&&(b=arguments[g-1],g-=2);for(var h=1;h<g;h++){var c=arguments[h],e;for(e in c)if(!0===d||null==a[e])if(!b||e in b)a[e]=c[e]}return a},prototypedCopy:function(a){var g=function(){};g.prototype=a;return new g},copy:function(a){var g={},d;for(d in a)g[d]=a[d];return g},isArray:function(a){return"[object Array]"==Object.prototype.toString.call(a)},isEmpty:function(a){for(var g in a)if(a.hasOwnProperty(g))return!1;[m
+[32m+[m[32mreturn!0},cssVendorPrefix:function(a,g,d){if(d)return f+a+":"+g+";"+a+":"+g;d={};d[a]=g;d[f+a]=g;return d},cssStyleToDomStyle:function(){var a=document.createElement("div").style,g="undefined"!=typeof a.cssFloat?"cssFloat":"undefined"!=typeof a.styleFloat?"styleFloat":"float";return function(a){return"float"==a?g:a.replace(/-./g,function(a){return a.substr(1).toUpperCase()})}}(),buildStyleHtml:function(a){a=[].concat(a);for(var g,d=[],b=0;b<a.length;b++)if(g=a[b])/@import|[{}]/.test(g)?d.push("\x3cstyle\x3e"+[m
+[32m+[m[32mg+"\x3c/style\x3e"):d.push('\x3clink type\x3d"text/css" rel\x3dstylesheet href\x3d"'+g+'"\x3e');return d.join("")},htmlEncode:function(a){return void 0===a||null===a?"":String(a).replace(b,"\x26amp;").replace(c,"\x26gt;").replace(e,"\x26lt;")},htmlDecode:function(a){return a.replace(l,h)},htmlEncodeAttr:function(a){return CKEDITOR.tools.htmlEncode(a).replace(m,"\x26quot;")},htmlDecodeAttr:function(a){return CKEDITOR.tools.htmlDecode(a)},transformPlainTextToHtml:function(a,g){var d=g==CKEDITOR.ENTER_BR,[m
+[32m+[m[32mb=this.htmlEncode(a.replace(/\r\n/g,"\n")),b=b.replace(/\t/g,"\x26nbsp;\x26nbsp; \x26nbsp;"),h=g==CKEDITOR.ENTER_P?"p":"div";if(!d){var c=/\n{2}/g;if(c.test(b))var e="\x3c"+h+"\x3e",f="\x3c/"+h+"\x3e",b=e+b.replace(c,function(){return f+e})+f}b=b.replace(/\n/g,"\x3cbr\x3e");d||(b=b.replace(new RegExp("\x3cbr\x3e(?\x3d\x3c/"+h+"\x3e)"),function(a){return CKEDITOR.tools.repeat(a,2)}));b=b.replace(/^ | $/g,"\x26nbsp;");return b=b.replace(/(>|\s) /g,function(a,g){return g+"\x26nbsp;"}).replace(/ (?=<)/g,[m
+[32m+[m[32m"\x26nbsp;")},getNextNumber:function(){var a=0;return function(){return++a}}(),getNextId:function(){return"cke_"+this.getNextNumber()},getUniqueId:function(){for(var a="e",g=0;8>g;g++)a+=Math.floor(65536*(1+Math.random())).toString(16).substring(1);return a},override:function(a,g){var d=g(a);d.prototype=a.prototype;return d},setTimeout:function(a,g,d,b,h){h||(h=window);d||(d=h);return h.setTimeout(function(){b?a.apply(d,[].concat(b)):a.apply(d)},g||0)},trim:function(){var a=/(?:^[ \t\n\r]+)|(?:[ \t\n\r]+$)/g;[m
+[32m+[m[32mreturn function(g){return g.replace(a,"")}}(),ltrim:function(){var a=/^[ \t\n\r]+/g;return function(g){return g.replace(a,"")}}(),rtrim:function(){var a=/[ \t\n\r]+$/g;return function(g){return g.replace(a,"")}}(),indexOf:function(a,g){if("function"==typeof g)for(var d=0,b=a.length;d<b;d++){if(g(a[d]))return d}else{if(a.indexOf)return a.indexOf(g);d=0;for(b=a.length;d<b;d++)if(a[d]===g)return d}return-1},search:function(a,g){var d=CKEDITOR.tools.indexOf(a,g);return 0<=d?a[d]:null},bind:function(a,[m
+[32m+[m[32mg){return function(){return a.apply(g,arguments)}},createClass:function(a){var g=a.$,d=a.base,b=a.privates||a._,h=a.proto;a=a.statics;!g&&(g=function(){d&&this.base.apply(this,arguments)});if(b)var c=g,g=function(){var a=this._||(this._={}),g;for(g in b){var d=b[g];a[g]="function"==typeof d?CKEDITOR.tools.bind(d,this):d}c.apply(this,arguments)};d&&(g.prototype=this.prototypedCopy(d.prototype),g.prototype.constructor=g,g.base=d,g.baseProto=d.prototype,g.prototype.base=function(){this.base=d.prototype.base;[m
+[32m+[m[32md.apply(this,arguments);this.base=arguments.callee});h&&this.extend(g.prototype,h,!0);a&&this.extend(g,a,!0);return g},addFunction:function(d,g){return a.push(function(){return d.apply(g||this,arguments)})-1},removeFunction:function(d){a[d]=null},callFunction:function(d){var g=a[d];return g&&g.apply(window,Array.prototype.slice.call(arguments,1))},cssLength:function(){var a=/^-?\d+\.?\d*px$/,g;return function(d){g=CKEDITOR.tools.trim(d+"")+"px";return a.test(g)?g:d||""}}(),convertToPx:function(){var a;[m
+[32m+[m[32mreturn function(g){a||(a=CKEDITOR.dom.element.createFromHtml('\x3cdiv style\x3d"position:absolute;left:-9999px;top:-9999px;margin:0px;padding:0px;border:0px;"\x3e\x3c/div\x3e',CKEDITOR.document),CKEDITOR.document.getBody().append(a));return/%$/.test(g)?g:(a.setStyle("width",g),a.$.clientWidth)}}(),repeat:function(a,g){return Array(g+1).join(a)},tryThese:function(){for(var a,g=0,d=arguments.length;g<d;g++){var b=arguments[g];try{a=b();break}catch(h){}}return a},genKey:function(){return Array.prototype.slice.call(arguments).join("-")},[m
+[32m+[m[32mdefer:function(a){return function(){var g=arguments,d=this;window.setTimeout(function(){a.apply(d,g)},0)}},normalizeCssText:function(a,g){var d=[],b,h=CKEDITOR.tools.parseCssText(a,!0,g);for(b in h)d.push(b+":"+h[b]);d.sort();return d.length?d.join(";")+";":""},convertRgbToHex:function(a){return a.replace(/(?:rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\))/gi,function(a,d,b,k){a=[d,b,k];for(d=0;3>d;d++)a[d]=("0"+parseInt(a[d],10).toString(16)).slice(-2);return"#"+a.join("")})},normalizeHex:function(a){return a.replace(/#(([0-9a-f]{3}){1,2})($|;|\s+)/gi,[m
+[32m+[m[32mfunction(a,d,b,k){a=d.toLowerCase();3==a.length&&(a=a.split(""),a=[a[0],a[0],a[1],a[1],a[2],a[2]].join(""));return"#"+a+k})},parseCssText:function(a,g,d){var b={};d&&(a=(new CKEDITOR.dom.element("span")).setAttribute("style",a).getAttribute("style")||"");a&&(a=CKEDITOR.tools.normalizeHex(CKEDITOR.tools.convertRgbToHex(a)));if(!a||";"==a)return b;a.replace(/&quot;/g,'"').replace(/\s*([^:;\s]+)\s*:\s*([^;]+)\s*(?=;|$)/g,function(a,d,k){g&&(d=d.toLowerCase(),"font-family"==d&&(k=k.replace(/\s*,\s*/g,[m
+[32m+[m[32m",")),k=CKEDITOR.tools.trim(k));b[d]=k});return b},writeCssText:function(a,g){var d,b=[];for(d in a)b.push(d+":"+a[d]);g&&b.sort();return b.join("; ")},objectCompare:function(a,g,d){var b;if(!a&&!g)return!0;if(!a||!g)return!1;for(b in a)if(a[b]!=g[b])return!1;if(!d)for(b in g)if(a[b]!=g[b])return!1;return!0},objectKeys:function(a){var g=[],d;for(d in a)g.push(d);return g},convertArrayToObject:function(a,g){var d={};1==arguments.length&&(g=!0);for(var b=0,h=a.length;b<h;++b)d[a[b]]=g;return d},fixDomain:function(){for(var a;;)try{a=[m
+[32m+[m[32mwindow.parent.document.domain;break}catch(g){a=a?a.replace(/.+?(?:\.|$)/,""):document.domain;if(!a)break;document.domain=a}return!!a},eventsBuffer:function(a,g,d){function b(){c=(new Date).getTime();h=!1;d?g.call(d):g()}var h,c=0;return{input:function(){if(!h){var g=(new Date).getTime()-c;g<a?h=setTimeout(b,a-g):b()}},reset:function(){h&&clearTimeout(h);h=c=0}}},enableHtml5Elements:function(a,g){for(var d="abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup main mark meter nav output progress section summary time video".split(" "),[m
+[32m+[m[32mb=d.length,h;b--;)h=a.createElement(d[b]),g&&a.appendChild(h)},checkIfAnyArrayItemMatches:function(a,g){for(var d=0,b=a.length;d<b;++d)if(a[d].match(g))return!0;return!1},checkIfAnyObjectPropertyMatches:function(a,g){for(var d in a)if(d.match(g))return!0;return!1},keystrokeToString:function(a,g){var d=g&16711680,b=g&65535,h=CKEDITOR.env.mac,c=[],e=[];d&CKEDITOR.CTRL&&(c.push(h?"⌘":a[17]),e.push(h?a[224]:a[17]));d&CKEDITOR.ALT&&(c.push(h?"⌥":a[18]),e.push(a[18]));d&CKEDITOR.SHIFT&&(c.push(h?"⇧":a[16]),[m
+[32m+[m[32me.push(a[16]));b&&(a[b]?(c.push(a[b]),e.push(a[b])):(c.push(String.fromCharCode(b)),e.push(String.fromCharCode(b))));return{display:c.join("+"),aria:e.join("+")}},transparentImageData:"data:image/gif;base64,R0lGODlhAQABAPABAP///wAAACH5BAEKAAAALAAAAAABAAEAAAICRAEAOw\x3d\x3d",getCookie:function(a){a=a.toLowerCase();for(var g=document.cookie.split(";"),d,b,h=0;h<g.length;h++)if(d=g[h].split("\x3d"),b=decodeURIComponent(CKEDITOR.tools.trim(d[0]).toLowerCase()),b===a)return decodeURIComponent(1<d.length?[m
+[32m+[m[32md[1]:"");return null},setCookie:function(a,g){document.cookie=encodeURIComponent(a)+"\x3d"+encodeURIComponent(g)+";path\x3d/"},getCsrfToken:function(){var a=CKEDITOR.tools.getCookie("ckCsrfToken");if(!a||40!=a.length){var a=[],g="";if(window.crypto&&window.crypto.getRandomValues)a=new Uint8Array(40),window.crypto.getRandomValues(a);else for(var d=0;40>d;d++)a.push(Math.floor(256*Math.random()));for(d=0;d<a.length;d++)var b="abcdefghijklmnopqrstuvwxyz0123456789".charAt(a[d]%36),g=g+(.5<Math.random()?[m
+[32m+[m[32mb.toUpperCase():b);a=g;CKEDITOR.tools.setCookie("ckCsrfToken",a)}return a},escapeCss:function(a){return a?window.CSS&&CSS.escape?CSS.escape(a):isNaN(parseInt(a.charAt(0),10))?a:"\\3"+a.charAt(0)+" "+a.substring(1,a.length):""},style:{parse:{_colors:{aliceblue:"#F0F8FF",antiquewhite:"#FAEBD7",aqua:"#00FFFF",aquamarine:"#7FFFD4",azure:"#F0FFFF",beige:"#F5F5DC",bisque:"#FFE4C4",black:"#000000",blanchedalmond:"#FFEBCD",blue:"#0000FF",blueviolet:"#8A2BE2",brown:"#A52A2A",burlywood:"#DEB887",cadetblue:"#5F9EA0",[m
+[32m+[m[32mchartreuse:"#7FFF00",chocolate:"#D2691E",coral:"#FF7F50",cornflowerblue:"#6495ED",cornsilk:"#FFF8DC",crimson:"#DC143C",cyan:"#00FFFF",darkblue:"#00008B",darkcyan:"#008B8B",darkgoldenrod:"#B8860B",darkgray:"#A9A9A9",darkgreen:"#006400",darkgrey:"#A9A9A9",darkkhaki:"#BDB76B",darkmagenta:"#8B008B",darkolivegreen:"#556B2F",darkorange:"#FF8C00",darkorchid:"#9932CC",darkred:"#8B0000",darksalmon:"#E9967A",darkseagreen:"#8FBC8F",darkslateblue:"#483D8B",darkslategray:"#2F4F4F",darkslategrey:"#2F4F4F",darkturquoise:"#00CED1",[m
+[32m+[m[32mdarkviolet:"#9400D3",deeppink:"#FF1493",deepskyblue:"#00BFFF",dimgray:"#696969",dimgrey:"#696969",dodgerblue:"#1E90FF",firebrick:"#B22222",floralwhite:"#FFFAF0",forestgreen:"#228B22",fuchsia:"#FF00FF",gainsboro:"#DCDCDC",ghostwhite:"#F8F8FF",gold:"#FFD700",goldenrod:"#DAA520",gray:"#808080",green:"#008000",greenyellow:"#ADFF2F",grey:"#808080",honeydew:"#F0FFF0",hotpink:"#FF69B4",indianred:"#CD5C5C",indigo:"#4B0082",ivory:"#FFFFF0",khaki:"#F0E68C",lavender:"#E6E6FA",lavenderblush:"#FFF0F5",lawngreen:"#7CFC00",[m
+[32m+[m[32mlemonchiffon:"#FFFACD",lightblue:"#ADD8E6",lightcoral:"#F08080",lightcyan:"#E0FFFF",lightgoldenrodyellow:"#FAFAD2",lightgray:"#D3D3D3",lightgreen:"#90EE90",lightgrey:"#D3D3D3",lightpink:"#FFB6C1",lightsalmon:"#FFA07A",lightseagreen:"#20B2AA",lightskyblue:"#87CEFA",lightslategray:"#778899",lightslategrey:"#778899",lightsteelblue:"#B0C4DE",lightyellow:"#FFFFE0",lime:"#00FF00",limegreen:"#32CD32",linen:"#FAF0E6",magenta:"#FF00FF",maroon:"#800000",mediumaquamarine:"#66CDAA",mediumblue:"#0000CD",mediumorchid:"#BA55D3",[m
+[32m+[m[32mmediumpurple:"#9370DB",mediumseagreen:"#3CB371",mediumslateblue:"#7B68EE",mediumspringgreen:"#00FA9A",mediumturquoise:"#48D1CC",mediumvioletred:"#C71585",midnightblue:"#191970",mintcream:"#F5FFFA",mistyrose:"#FFE4E1",moccasin:"#FFE4B5",navajowhite:"#FFDEAD",navy:"#000080",oldlace:"#FDF5E6",olive:"#808000",olivedrab:"#6B8E23",orange:"#FFA500",orangered:"#FF4500",orchid:"#DA70D6",palegoldenrod:"#EEE8AA",palegreen:"#98FB98",paleturquoise:"#AFEEEE",palevioletred:"#DB7093",papayawhip:"#FFEFD5",peachpuff:"#FFDAB9",[m
+[32m+[m[32mperu:"#CD853F",pink:"#FFC0CB",plum:"#DDA0DD",powderblue:"#B0E0E6",purple:"#800080",rebeccapurple:"#663399",red:"#FF0000",rosybrown:"#BC8F8F",royalblue:"#4169E1",saddlebrown:"#8B4513",salmon:"#FA8072",sandybrown:"#F4A460",seagreen:"#2E8B57",seashell:"#FFF5EE",sienna:"#A0522D",silver:"#C0C0C0",skyblue:"#87CEEB",slateblue:"#6A5ACD",slategray:"#708090",slategrey:"#708090",snow:"#FFFAFA",springgreen:"#00FF7F",steelblue:"#4682B4",tan:"#D2B48C",teal:"#008080",thistle:"#D8BFD8",tomato:"#FF6347",turquoise:"#40E0D0",[m
+[32m+[m[32mviolet:"#EE82EE",wheat:"#F5DEB3",white:"#FFFFFF",whitesmoke:"#F5F5F5",yellow:"#FFFF00",yellowgreen:"#9ACD32"},_rgbaRegExp:/rgba?\(\s*\d+%?\s*,\s*\d+%?\s*,\s*\d+%?\s*(?:,\s*[0-9.]+\s*)?\)/gi,_hslaRegExp:/hsla?\(\s*[0-9.]+\s*,\s*\d+%\s*,\s*\d+%\s*(?:,\s*[0-9.]+\s*)?\)/gi,background:function(a){var g=[],d=[],d=this._findColor(a);d.length&&(g.color=d[0],CKEDITOR.tools.array.forEach(d,function(g){a=a.replace(g,"")}));if(a=CKEDITOR.tools.trim(a))g.unprocessed=a;return g},margin:function(a){function g(a){d.top=[m
+[32m+[m[32mb[a[0]];d.right=b[a[1]];d.bottom=b[a[2]];d.left=b[a[3]]}var d={},b=a.match(/(?:\-?[\.\d]+(?:%|\w*)|auto|inherit|initial|unset)/g)||["0px"];switch(b.length){case 1:g([0,0,0,0]);break;case 2:g([0,1,0,1]);break;case 3:g([0,1,2,1]);break;case 4:g([0,1,2,3])}return d},_findColor:function(a){var g=[],d=CKEDITOR.tools.array,g=g.concat(a.match(this._rgbaRegExp)||[]),g=g.concat(a.match(this._hslaRegExp)||[]);return g=g.concat(d.filter(a.split(/\s+/),function(a){return a.match(/^\#[a-f0-9]{3}(?:[a-f0-9]{3})?$/gi)?[m
+[32m+[m[32m!0:a.toLowerCase()in CKEDITOR.tools.style.parse._colors}))}}},array:{filter:function(a,g,d){var b=[];this.forEach(a,function(h,c){g.call(d,h,c,a)&&b.push(h)});return b},forEach:function(a,g,d){var b=a.length,h;for(h=0;h<b;h++)g.call(d,a[h],h,a)},map:function(a,g,d){for(var b=[],h=0;h<a.length;h++)b.push(g.call(d,a[h],h,a));return b},reduce:function(a,g,d,b){for(var h=0;h<a.length;h++)d=g.call(b,d,a[h],h,a);return d}}};CKEDITOR.tools.array.indexOf=CKEDITOR.tools.indexOf;CKEDITOR.tools.array.isArray=[m
+[32m+[m[32mCKEDITOR.tools.isArray}(),CKEDITOR.dtd=function(){var a=CKEDITOR.tools.extend,f=function(a,g){for(var d=CKEDITOR.tools.clone(a),b=1;b<arguments.length;b++){g=arguments[b];for(var h in g)delete d[h]}return d},b={},c={},e={address:1,article:1,aside:1,blockquote:1,details:1,div:1,dl:1,fieldset:1,figure:1,footer:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,header:1,hgroup:1,hr:1,main:1,menu:1,nav:1,ol:1,p:1,pre:1,section:1,table:1,ul:1},m={command:1,link:1,meta:1,noscript:1,script:1,style:1},l={},d={"#":1},[m
+[32m+[m[32mh={center:1,dir:1,noframes:1};a(b,{a:1,abbr:1,area:1,audio:1,b:1,bdi:1,bdo:1,br:1,button:1,canvas:1,cite:1,code:1,command:1,datalist:1,del:1,dfn:1,em:1,embed:1,i:1,iframe:1,img:1,input:1,ins:1,kbd:1,keygen:1,label:1,map:1,mark:1,meter:1,noscript:1,object:1,output:1,progress:1,q:1,ruby:1,s:1,samp:1,script:1,select:1,small:1,span:1,strong:1,sub:1,sup:1,textarea:1,time:1,u:1,"var":1,video:1,wbr:1},d,{acronym:1,applet:1,basefont:1,big:1,font:1,isindex:1,strike:1,style:1,tt:1});a(c,e,b,h);f={a:f(b,{a:1,[m
+[32m+[m[32mbutton:1}),abbr:b,address:c,area:l,article:c,aside:c,audio:a({source:1,track:1},c),b:b,base:l,bdi:b,bdo:b,blockquote:c,body:c,br:l,button:f(b,{a:1,button:1}),canvas:b,caption:c,cite:b,code:b,col:l,colgroup:{col:1},command:l,datalist:a({option:1},b),dd:c,del:b,details:a({summary:1},c),dfn:b,div:c,dl:{dt:1,dd:1},dt:c,em:b,embed:l,fieldset:a({legend:1},c),figcaption:c,figure:a({figcaption:1},c),footer:c,form:c,h1:b,h2:b,h3:b,h4:b,h5:b,h6:b,head:a({title:1,base:1},m),header:c,hgroup:{h1:1,h2:1,h3:1,h4:1,[m
+[32m+[m[32mh5:1,h6:1},hr:l,html:a({head:1,body:1},c,m),i:b,iframe:d,img:l,input:l,ins:b,kbd:b,keygen:l,label:b,legend:b,li:c,link:l,main:c,map:c,mark:b,menu:a({li:1},c),meta:l,meter:f(b,{meter:1}),nav:c,noscript:a({link:1,meta:1,style:1},b),object:a({param:1},b),ol:{li:1},optgroup:{option:1},option:d,output:b,p:b,param:l,pre:b,progress:f(b,{progress:1}),q:b,rp:b,rt:b,ruby:a({rp:1,rt:1},b),s:b,samp:b,script:d,section:c,select:{optgroup:1,option:1},small:b,source:l,span:b,strong:b,style:d,sub:b,summary:a({h1:1,[m
+[32m+[m[32mh2:1,h3:1,h4:1,h5:1,h6:1},b),sup:b,table:{caption:1,colgroup:1,thead:1,tfoot:1,tbody:1,tr:1},tbody:{tr:1},td:c,textarea:d,tfoot:{tr:1},th:c,thead:{tr:1},time:f(b,{time:1}),title:d,tr:{th:1,td:1},track:l,u:b,ul:{li:1},"var":b,video:a({source:1,track:1},c),wbr:l,acronym:b,applet:a({param:1},c),basefont:l,big:b,center:c,dialog:l,dir:{li:1},font:b,isindex:l,noframes:c,strike:b,tt:b};a(f,{$block:a({audio:1,dd:1,dt:1,figcaption:1,li:1,video:1},e,h),$blockLimit:{article:1,aside:1,audio:1,body:1,caption:1,[m
+[32m+[m[32mdetails:1,dir:1,div:1,dl:1,fieldset:1,figcaption:1,figure:1,footer:1,form:1,header:1,hgroup:1,main:1,menu:1,nav:1,ol:1,section:1,table:1,td:1,th:1,tr:1,ul:1,video:1},$cdata:{script:1,style:1},$editable:{address:1,article:1,aside:1,blockquote:1,body:1,details:1,div:1,fieldset:1,figcaption:1,footer:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,header:1,hgroup:1,main:1,nav:1,p:1,pre:1,section:1},$empty:{area:1,base:1,basefont:1,br:1,col:1,command:1,dialog:1,embed:1,hr:1,img:1,input:1,isindex:1,keygen:1,link:1,[m
+[32m+[m[32mmeta:1,param:1,source:1,track:1,wbr:1},$inline:b,$list:{dl:1,ol:1,ul:1},$listItem:{dd:1,dt:1,li:1},$nonBodyContent:a({body:1,head:1,html:1},f.head),$nonEditable:{applet:1,audio:1,button:1,embed:1,iframe:1,map:1,object:1,option:1,param:1,script:1,textarea:1,video:1},$object:{applet:1,audio:1,button:1,hr:1,iframe:1,img:1,input:1,object:1,select:1,table:1,textarea:1,video:1},$removeEmpty:{abbr:1,acronym:1,b:1,bdi:1,bdo:1,big:1,cite:1,code:1,del:1,dfn:1,em:1,font:1,i:1,ins:1,label:1,kbd:1,mark:1,meter:1,[m
+[32m+[m[32moutput:1,q:1,ruby:1,s:1,samp:1,small:1,span:1,strike:1,strong:1,sub:1,sup:1,time:1,tt:1,u:1,"var":1},$tabIndex:{a:1,area:1,button:1,input:1,object:1,select:1,textarea:1},$tableContent:{caption:1,col:1,colgroup:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1},$transparent:{a:1,audio:1,canvas:1,del:1,ins:1,map:1,noscript:1,object:1,video:1},$intermediate:{caption:1,colgroup:1,dd:1,dt:1,figcaption:1,legend:1,li:1,optgroup:1,option:1,rp:1,rt:1,summary:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1}});return f}(),[m
+[32m+[m[32mCKEDITOR.dom.event=function(a){this.$=a},CKEDITOR.dom.event.prototype={getKey:function(){return this.$.keyCode||this.$.which},getKeystroke:function(){var a=this.getKey();if(this.$.ctrlKey||this.$.metaKey)a+=CKEDITOR.CTRL;this.$.shiftKey&&(a+=CKEDITOR.SHIFT);this.$.altKey&&(a+=CKEDITOR.ALT);return a},preventDefault:function(a){var f=this.$;f.preventDefault?f.preventDefault():f.returnValue=!1;a&&this.stopPropagation()},stopPropagation:function(){var a=this.$;a.stopPropagation?a.stopPropagation():a.cancelBubble=[m
+[32m+[m[32m!0},getTarget:function(){var a=this.$.target||this.$.srcElement;return a?new CKEDITOR.dom.node(a):null},getPhase:function(){return this.$.eventPhase||2},getPageOffset:function(){var a=this.getTarget().getDocument().$;return{x:this.$.pageX||this.$.clientX+(a.documentElement.scrollLeft||a.body.scrollLeft),y:this.$.pageY||this.$.clientY+(a.documentElement.scrollTop||a.body.scrollTop)}}},CKEDITOR.CTRL=1114112,CKEDITOR.SHIFT=2228224,CKEDITOR.ALT=4456448,CKEDITOR.EVENT_PHASE_CAPTURING=1,CKEDITOR.EVENT_PHASE_AT_TARGET=[m
+[32m+[m[32m2,CKEDITOR.EVENT_PHASE_BUBBLING=3,CKEDITOR.dom.domObject=function(a){a&&(this.$=a)},CKEDITOR.dom.domObject.prototype=function(){var a=function(a,b){return function(c){"undefined"!=typeof CKEDITOR&&a.fire(b,new CKEDITOR.dom.event(c))}};return{getPrivate:function(){var a;(a=this.getCustomData("_"))||this.setCustomData("_",a={});return a},on:function(f){var b=this.getCustomData("_cke_nativeListeners");b||(b={},this.setCustomData("_cke_nativeListeners",b));b[f]||(b=b[f]=a(this,f),this.$.addEventListener?[m
+[32m+[m[32mthis.$.addEventListener(f,b,!!CKEDITOR.event.useCapture):this.$.attachEvent&&this.$.attachEvent("on"+f,b));return CKEDITOR.event.prototype.on.apply(this,arguments)},removeListener:function(a){CKEDITOR.event.prototype.removeListener.apply(this,arguments);if(!this.hasListeners(a)){var b=this.getCustomData("_cke_nativeListeners"),c=b&&b[a];c&&(this.$.removeEventListener?this.$.removeEventListener(a,c,!1):this.$.detachEvent&&this.$.detachEvent("on"+a,c),delete b[a])}},removeAllListeners:function(){var a=[m
+[32m+[m[32mthis.getCustomData("_cke_nativeListeners"),b;for(b in a){var c=a[b];this.$.detachEvent?this.$.detachEvent("on"+b,c):this.$.removeEventListener&&this.$.removeEventListener(b,c,!1);delete a[b]}CKEDITOR.event.prototype.removeAllListeners.call(this)}}}(),function(a){var f={};CKEDITOR.on("reset",function(){f={}});a.equals=function(a){try{return a&&a.$===this.$}catch(c){return!1}};a.setCustomData=function(a,c){var e=this.getUniqueId();(f[e]||(f[e]={}))[a]=c;return this};a.getCustomData=function(a){var c=[m
+[32m+[m[32mthis.$["data-cke-expando"];return(c=c&&f[c])&&a in c?c[a]:null};a.removeCustomData=function(a){var c=this.$["data-cke-expando"],c=c&&f[c],e,m;c&&(e=c[a],m=a in c,delete c[a]);return m?e:null};a.clearCustomData=function(){this.removeAllListeners();var a=this.$["data-cke-expando"];a&&delete f[a]};a.getUniqueId=function(){return this.$["data-cke-expando"]||(this.$["data-cke-expando"]=CKEDITOR.tools.getNextNumber())};CKEDITOR.event.implementOn(a)}(CKEDITOR.dom.domObject.prototype),CKEDITOR.dom.node=function(a){return a?[m
+[32m+[m[32mnew CKEDITOR.dom[a.nodeType==CKEDITOR.NODE_DOCUMENT?"document":a.nodeType==CKEDITOR.NODE_ELEMENT?"element":a.nodeType==CKEDITOR.NODE_TEXT?"text":a.nodeType==CKEDITOR.NODE_COMMENT?"comment":a.nodeType==CKEDITOR.NODE_DOCUMENT_FRAGMENT?"documentFragment":"domObject"](a):this},CKEDITOR.dom.node.prototype=new CKEDITOR.dom.domObject,CKEDITOR.NODE_ELEMENT=1,CKEDITOR.NODE_DOCUMENT=9,CKEDITOR.NODE_TEXT=3,CKEDITOR.NODE_COMMENT=8,CKEDITOR.NODE_DOCUMENT_FRAGMENT=11,CKEDITOR.POSITION_IDENTICAL=0,CKEDITOR.POSITION_DISCONNECTED=[m
+[32m+[m[32m1,CKEDITOR.POSITION_FOLLOWING=2,CKEDITOR.POSITION_PRECEDING=4,CKEDITOR.POSITION_IS_CONTAINED=8,CKEDITOR.POSITION_CONTAINS=16,CKEDITOR.tools.extend(CKEDITOR.dom.node.prototype,{appendTo:function(a,f){a.append(this,f);return a},clone:function(a,f){function b(c){c["data-cke-expando"]&&(c["data-cke-expando"]=!1);if(c.nodeType==CKEDITOR.NODE_ELEMENT||c.nodeType==CKEDITOR.NODE_DOCUMENT_FRAGMENT)if(f||c.nodeType!=CKEDITOR.NODE_ELEMENT||c.removeAttribute("id",!1),a){c=c.childNodes;for(var e=0;e<c.length;e++)b(c[e])}}[m
+[32m+[m[32mfunction c(b){if(b.type==CKEDITOR.NODE_ELEMENT||b.type==CKEDITOR.NODE_DOCUMENT_FRAGMENT){if(b.type!=CKEDITOR.NODE_DOCUMENT_FRAGMENT){var e=b.getName();":"==e[0]&&b.renameNode(e.substring(1))}if(a)for(e=0;e<b.getChildCount();e++)c(b.getChild(e))}}var e=this.$.cloneNode(a);b(e);e=new CKEDITOR.dom.node(e);CKEDITOR.env.ie&&9>CKEDITOR.env.version&&(this.type==CKEDITOR.NODE_ELEMENT||this.type==CKEDITOR.NODE_DOCUMENT_FRAGMENT)&&c(e);return e},hasPrevious:function(){return!!this.$.previousSibling},hasNext:function(){return!!this.$.nextSibling},[m
+[32m+[m[32minsertAfter:function(a){a.$.parentNode.insertBefore(this.$,a.$.nextSibling);return a},insertBefore:function(a){a.$.parentNode.insertBefore(this.$,a.$);return a},insertBeforeMe:function(a){this.$.parentNode.insertBefore(a.$,this.$);return a},getAddress:function(a){for(var f=[],b=this.getDocument().$.documentElement,c=this.$;c&&c!=b;){var e=c.parentNode;e&&f.unshift(this.getIndex.call({$:c},a));c=e}return f},getDocument:function(){return new CKEDITOR.dom.document(this.$.ownerDocument||this.$.parentNode.ownerDocument)},[m
+[32m+[m[32mgetIndex:function(a){function f(a,d){var h=d?a.nextSibling:a.previousSibling;return h&&h.nodeType==CKEDITOR.NODE_TEXT?b(h)?f(h,d):h:null}function b(a){return!a.nodeValue||a.nodeValue==CKEDITOR.dom.selection.FILLING_CHAR_SEQUENCE}var c=this.$,e=-1,m;if(!this.$.parentNode||a&&c.nodeType==CKEDITOR.NODE_TEXT&&b(c)&&!f(c)&&!f(c,!0))return-1;do a&&c!=this.$&&c.nodeType==CKEDITOR.NODE_TEXT&&(m||b(c))||(e++,m=c.nodeType==CKEDITOR.NODE_TEXT);while(c=c.previousSibling);return e},getNextSourceNode:function(a,[m
+[32m+[m[32mf,b){if(b&&!b.call){var c=b;b=function(a){return!a.equals(c)}}a=!a&&this.getFirst&&this.getFirst();var e;if(!a){if(this.type==CKEDITOR.NODE_ELEMENT&&b&&!1===b(this,!0))return null;a=this.getNext()}for(;!a&&(e=(e||this).getParent());){if(b&&!1===b(e,!0))return null;a=e.getNext()}return!a||b&&!1===b(a)?null:f&&f!=a.type?a.getNextSourceNode(!1,f,b):a},getPreviousSourceNode:function(a,f,b){if(b&&!b.call){var c=b;b=function(a){return!a.equals(c)}}a=!a&&this.getLast&&this.getLast();var e;if(!a){if(this.type==[m
+[32m+[m[32mCKEDITOR.NODE_ELEMENT&&b&&!1===b(this,!0))return null;a=this.getPrevious()}for(;!a&&(e=(e||this).getParent());){if(b&&!1===b(e,!0))return null;a=e.getPrevious()}return!a||b&&!1===b(a)?null:f&&a.type!=f?a.getPreviousSourceNode(!1,f,b):a},getPrevious:function(a){var f=this.$,b;do b=(f=f.previousSibling)&&10!=f.nodeType&&new CKEDITOR.dom.node(f);while(b&&a&&!a(b));return b},getNext:function(a){var f=this.$,b;do b=(f=f.nextSibling)&&new CKEDITOR.dom.node(f);while(b&&a&&!a(b));return b},getParent:function(a){var f=[m
+[32m+[m[32mthis.$.parentNode;return f&&(f.nodeType==CKEDITOR.NODE_ELEMENT||a&&f.nodeType==CKEDITOR.NODE_DOCUMENT_FRAGMENT)?new CKEDITOR.dom.node(f):null},getParents:function(a){var f=this,b=[];do b[a?"push":"unshift"](f);while(f=f.getParent());return b},getCommonAncestor:function(a){if(a.equals(this))return this;if(a.contains&&a.contains(this))return a;var f=this.contains?this:this.getParent();do if(f.contains(a))return f;while(f=f.getParent());return null},getPosition:function(a){var f=this.$,b=a.$;if(f.compareDocumentPosition)return f.compareDocumentPosition(b);[m
+[32m+[m[32mif(f==b)return CKEDITOR.POSITION_IDENTICAL;if(this.type==CKEDITOR.NODE_ELEMENT&&a.type==CKEDITOR.NODE_ELEMENT){if(f.contains){if(f.contains(b))return CKEDITOR.POSITION_CONTAINS+CKEDITOR.POSITION_PRECEDING;if(b.contains(f))return CKEDITOR.POSITION_IS_CONTAINED+CKEDITOR.POSITION_FOLLOWING}if("sourceIndex"in f)return 0>f.sourceIndex||0>b.sourceIndex?CKEDITOR.POSITION_DISCONNECTED:f.sourceIndex<b.sourceIndex?CKEDITOR.POSITION_PRECEDING:CKEDITOR.POSITION_FOLLOWING}f=this.getAddress();a=a.getAddress();[m
+[32m+[m[32mfor(var b=Math.min(f.length,a.length),c=0;c<b;c++)if(f[c]!=a[c])return f[c]<a[c]?CKEDITOR.POSITION_PRECEDING:CKEDITOR.POSITION_FOLLOWING;return f.length<a.length?CKEDITOR.POSITION_CONTAINS+CKEDITOR.POSITION_PRECEDING:CKEDITOR.POSITION_IS_CONTAINED+CKEDITOR.POSITION_FOLLOWING},getAscendant:function(a,f){var b=this.$,c,e;f||(b=b.parentNode);"function"==typeof a?(e=!0,c=a):(e=!1,c=function(b){b="string"==typeof b.nodeName?b.nodeName.toLowerCase():"";return"string"==typeof a?b==a:b in a});for(;b;){if(c(e?[m
+[32m+[m[32mnew CKEDITOR.dom.node(b):b))return new CKEDITOR.dom.node(b);try{b=b.parentNode}catch(m){b=null}}return null},hasAscendant:function(a,f){var b=this.$;f||(b=b.parentNode);for(;b;){if(b.nodeName&&b.nodeName.toLowerCase()==a)return!0;b=b.parentNode}return!1},move:function(a,f){a.append(this.remove(),f)},remove:function(a){var f=this.$,b=f.parentNode;if(b){if(a)for(;a=f.firstChild;)b.insertBefore(f.removeChild(a),f);b.removeChild(f)}return this},replace:function(a){this.insertBefore(a);a.remove()},trim:function(){this.ltrim();[m
+[32m+[m[32mthis.rtrim()},ltrim:function(){for(var a;this.getFirst&&(a=this.getFirst());){if(a.type==CKEDITOR.NODE_TEXT){var f=CKEDITOR.tools.ltrim(a.getText()),b=a.getLength();if(f)f.length<b&&(a.split(b-f.length),this.$.removeChild(this.$.firstChild));else{a.remove();continue}}break}},rtrim:function(){for(var a;this.getLast&&(a=this.getLast());){if(a.type==CKEDITOR.NODE_TEXT){var f=CKEDITOR.tools.rtrim(a.getText()),b=a.getLength();if(f)f.length<b&&(a.split(f.length),this.$.lastChild.parentNode.removeChild(this.$.lastChild));[m
+[32m+[m[32melse{a.remove();continue}}break}CKEDITOR.env.needsBrFiller&&(a=this.$.lastChild)&&1==a.type&&"br"==a.nodeName.toLowerCase()&&a.parentNode.removeChild(a)},isReadOnly:function(a){var f=this;this.type!=CKEDITOR.NODE_ELEMENT&&(f=this.getParent());CKEDITOR.env.edge&&f&&f.is("textarea","input")&&(a=!0);if(!a&&f&&"undefined"!=typeof f.$.isContentEditable)return!(f.$.isContentEditable||f.data("cke-editable"));for(;f;){if(f.data("cke-editable"))return!1;if(f.hasAttribute("contenteditable"))return"false"==[m
+[32m+[m[32mf.getAttribute("contenteditable");f=f.getParent()}return!0}}),CKEDITOR.dom.window=function(a){CKEDITOR.dom.domObject.call(this,a)},CKEDITOR.dom.window.prototype=new CKEDITOR.dom.domObject,CKEDITOR.tools.extend(CKEDITOR.dom.window.prototype,{focus:function(){this.$.focus()},getViewPaneSize:function(){var a=this.$.document,f="CSS1Compat"==a.compatMode;return{width:(f?a.documentElement.clientWidth:a.body.clientWidth)||0,height:(f?a.documentElement.clientHeight:a.body.clientHeight)||0}},getScrollPosition:function(){var a=[m
+[32m+[m[32mthis.$;if("pageXOffset"in a)return{x:a.pageXOffset||0,y:a.pageYOffset||0};a=a.document;return{x:a.documentElement.scrollLeft||a.body.scrollLeft||0,y:a.documentElement.scrollTop||a.body.scrollTop||0}},getFrame:function(){var a=this.$.frameElement;return a?new CKEDITOR.dom.element.get(a):null}}),CKEDITOR.dom.document=function(a){CKEDITOR.dom.domObject.call(this,a)},CKEDITOR.dom.document.prototype=new CKEDITOR.dom.domObject,CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,{type:CKEDITOR.NODE_DOCUMENT,[m
+[32m+[m[32mappendStyleSheet:function(a){if(this.$.createStyleSheet)this.$.createStyleSheet(a);else{var f=new CKEDITOR.dom.element("link");f.setAttributes({rel:"stylesheet",type:"text/css",href:a});this.getHead().append(f)}},appendStyleText:function(a){if(this.$.createStyleSheet){var f=this.$.createStyleSheet("");f.cssText=a}else{var b=new CKEDITOR.dom.element("style",this);b.append(new CKEDITOR.dom.text(a,this));this.getHead().append(b)}return f||b.$.sheet},createElement:function(a,f){var b=new CKEDITOR.dom.element(a,[m
+[32m+[m[32mthis);f&&(f.attributes&&b.setAttributes(f.attributes),f.styles&&b.setStyles(f.styles));return b},createText:function(a){return new CKEDITOR.dom.text(a,this)},focus:function(){this.getWindow().focus()},getActive:function(){var a;try{a=this.$.activeElement}catch(f){return null}return new CKEDITOR.dom.element(a)},getById:function(a){return(a=this.$.getElementById(a))?new CKEDITOR.dom.element(a):null},getByAddress:function(a,f){for(var b=this.$.documentElement,c=0;b&&c<a.length;c++){var e=a[c];if(f)for(var m=[m
+[32m+[m[32m-1,l=0;l<b.childNodes.length;l++){var d=b.childNodes[l];if(!0!==f||3!=d.nodeType||!d.previousSibling||3!=d.previousSibling.nodeType)if(m++,m==e){b=d;break}}else b=b.childNodes[e]}return b?new CKEDITOR.dom.node(b):null},getElementsByTag:function(a,f){CKEDITOR.env.ie&&8>=document.documentMode||!f||(a=f+":"+a);return new CKEDITOR.dom.nodeList(this.$.getElementsByTagName(a))},getHead:function(){var a=this.$.getElementsByTagName("head")[0];return a=a?new CKEDITOR.dom.element(a):this.getDocumentElement().append(new CKEDITOR.dom.element("head"),[m
+[32m+[m[32m!0)},getBody:function(){return new CKEDITOR.dom.element(this.$.body)},getDocumentElement:function(){return new CKEDITOR.dom.element(this.$.documentElement)},getWindow:function(){return new CKEDITOR.dom.window(this.$.parentWindow||this.$.defaultView)},write:function(a){this.$.open("text/html","replace");CKEDITOR.env.ie&&(a=a.replace(/(?:^\s*<!DOCTYPE[^>]*?>)|^/i,'$\x26\n\x3cscript data-cke-temp\x3d"1"\x3e('+CKEDITOR.tools.fixDomain+")();\x3c/script\x3e"));this.$.write(a);this.$.close()},find:function(a){return new CKEDITOR.dom.nodeList(this.$.querySelectorAll(a))},[m
+[32m+[m[32mfindOne:function(a){return(a=this.$.querySelector(a))?new CKEDITOR.dom.element(a):null},_getHtml5ShivFrag:function(){var a=this.getCustomData("html5ShivFrag");a||(a=this.$.createDocumentFragment(),CKEDITOR.tools.enableHtml5Elements(a,!0),this.setCustomData("html5ShivFrag",a));return a}}),CKEDITOR.dom.nodeList=function(a){this.$=a},CKEDITOR.dom.nodeList.prototype={count:function(){return this.$.length},getItem:function(a){return 0>a||a>=this.$.length?null:(a=this.$[a])?new CKEDITOR.dom.node(a):null}},[m
+[32m+[m[32mCKEDITOR.dom.element=function(a,f){"string"==typeof a&&(a=(f?f.$:document).createElement(a));CKEDITOR.dom.domObject.call(this,a)},CKEDITOR.dom.element.get=function(a){return(a="string"==typeof a?document.getElementById(a)||document.getElementsByName(a)[0]:a)&&(a.$?a:new CKEDITOR.dom.element(a))},CKEDITOR.dom.element.prototype=new CKEDITOR.dom.node,CKEDITOR.dom.element.createFromHtml=function(a,f){var b=new CKEDITOR.dom.element("div",f);b.setHtml(a);return b.getFirst().remove()},CKEDITOR.dom.element.setMarker=[m
+[32m+[m[32mfunction(a,f,b,c){var e=f.getCustomData("list_marker_id")||f.setCustomData("list_marker_id",CKEDITOR.tools.getNextNumber()).getCustomData("list_marker_id"),m=f.getCustomData("list_marker_names")||f.setCustomData("list_marker_names",{}).getCustomData("list_marker_names");a[e]=f;m[b]=1;return f.setCustomData(b,c)},CKEDITOR.dom.element.clearAllMarkers=function(a){for(var f in a)CKEDITOR.dom.element.clearMarkers(a,a[f],1)},CKEDITOR.dom.element.clearMarkers=function(a,f,b){var c=f.getCustomData("list_marker_names"),[m
+[32m+[m[32me=f.getCustomData("list_marker_id"),m;for(m in c)f.removeCustomData(m);f.removeCustomData("list_marker_names");b&&(f.removeCustomData("list_marker_id"),delete a[e])},function(){function a(a,b){return-1<(" "+a+" ").replace(m," ").indexOf(" "+b+" ")}function f(a){var b=!0;a.$.id||(a.$.id="cke_tmp_"+CKEDITOR.tools.getNextNumber(),b=!1);return function(){b||a.removeAttribute("id")}}function b(a,b){var c=CKEDITOR.tools.escapeCss(a.$.id);return"#"+c+" "+b.split(/,\s*/).join(", #"+c+" ")}function c(a){for(var b=[m
+[32m+[m[32m0,c=0,g=l[a].length;c<g;c++)b+=parseFloat(this.getComputedStyle(l[a][c])||0,10)||0;return b}var e=document.createElement("_").classList,e="undefined"!==typeof e&&null!==String(e.add).match(/\[Native code\]/gi),m=/[\n\t\r]/g;CKEDITOR.tools.extend(CKEDITOR.dom.element.prototype,{type:CKEDITOR.NODE_ELEMENT,addClass:e?function(a){this.$.classList.add(a);return this}:function(d){var b=this.$.className;b&&(a(b,d)||(b+=" "+d));this.$.className=b||d;return this},removeClass:e?function(a){var b=this.$;b.classList.remove(a);[m
+[32m+[m[32mb.className||b.removeAttribute("class");return this}:function(d){var b=this.getAttribute("class");b&&a(b,d)&&((b=b.replace(new RegExp("(?:^|\\s+)"+d+"(?\x3d\\s|$)"),"").replace(/^\s+/,""))?this.setAttribute("class",b):this.removeAttribute("class"));return this},hasClass:function(d){return a(this.$.className,d)},append:function(a,b){"string"==typeof a&&(a=this.getDocument().createElement(a));b?this.$.insertBefore(a.$,this.$.firstChild):this.$.appendChild(a.$);return a},appendHtml:function(a){if(this.$.childNodes.length){var b=[m
+[32m+[m[32mnew CKEDITOR.dom.element("div",this.getDocument());b.setHtml(a);b.moveChildren(this)}else this.setHtml(a)},appendText:function(a){null!=this.$.text&&CKEDITOR.env.ie&&9>CKEDITOR.env.version?this.$.text+=a:this.append(new CKEDITOR.dom.text(a))},appendBogus:function(a){if(a||CKEDITOR.env.needsBrFiller){for(a=this.getLast();a&&a.type==CKEDITOR.NODE_TEXT&&!CKEDITOR.tools.rtrim(a.getText());)a=a.getPrevious();a&&a.is&&a.is("br")||(a=this.getDocument().createElement("br"),CKEDITOR.env.gecko&&a.setAttribute("type",[m
+[32m+[m[32m"_moz"),this.append(a))}},breakParent:function(a,b){var c=new CKEDITOR.dom.range(this.getDocument());c.setStartAfter(this);c.setEndAfter(a);var g=c.extractContents(!1,b||!1),e;c.insertNode(this.remove());if(CKEDITOR.env.ie&&!CKEDITOR.env.edge){for(c=new CKEDITOR.dom.element("div");e=g.getFirst();)e.$.style.backgroundColor&&(e.$.style.backgroundColor=e.$.style.backgroundColor),c.append(e);c.insertAfter(this);c.remove(!0)}else g.insertAfterNode(this)},contains:document.compareDocumentPosition?function(a){return!!(this.$.compareDocumentPosition(a.$)&[m
+[32m+[m[32m16)}:function(a){var b=this.$;return a.type!=CKEDITOR.NODE_ELEMENT?b.contains(a.getParent().$):b!=a.$&&b.contains(a.$)},focus:function(){function a(){try{this.$.focus()}catch(b){}}return function(b){b?CKEDITOR.tools.setTimeout(a,100,this):a.call(this)}}(),getHtml:function(){var a=this.$.innerHTML;return CKEDITOR.env.ie?a.replace(/<\?[^>]*>/g,""):a},getOuterHtml:function(){if(this.$.outerHTML)return this.$.outerHTML.replace(/<\?[^>]*>/,"");var a=this.$.ownerDocument.createElement("div");a.appendChild(this.$.cloneNode(!0));[m
+[32m+[m[32mreturn a.innerHTML},getClientRect:function(){var a=CKEDITOR.tools.extend({},this.$.getBoundingClientRect());!a.width&&(a.width=a.right-a.left);!a.height&&(a.height=a.bottom-a.top);return a},setHtml:CKEDITOR.env.ie&&9>CKEDITOR.env.version?function(a){try{var b=this.$;if(this.getParent())return b.innerHTML=a;var c=this.getDocument()._getHtml5ShivFrag();c.appendChild(b);b.innerHTML=a;c.removeChild(b);return a}catch(g){this.$.innerHTML="";b=new CKEDITOR.dom.element("body",this.getDocument());b.$.innerHTML=[m
+[32m+[m[32ma;for(b=b.getChildren();b.count();)this.append(b.getItem(0));return a}}:function(a){return this.$.innerHTML=a},setText:function(){var a=document.createElement("p");a.innerHTML="x";a=a.textContent;return function(b){this.$[a?"textContent":"innerText"]=b}}(),getAttribute:function(){var a=function(a){return this.$.getAttribute(a,2)};return CKEDITOR.env.ie&&(CKEDITOR.env.ie7Compat||CKEDITOR.env.quirks)?function(a){switch(a){case "class":a="className";break;case "http-equiv":a="httpEquiv";break;case "name":return this.$.name;[m
+[32m+[m[32mcase "tabindex":return a=this.$.getAttribute(a,2),0!==a&&0===this.$.tabIndex&&(a=null),a;case "checked":return a=this.$.attributes.getNamedItem(a),(a.specified?a.nodeValue:this.$.checked)?"checked":null;case "hspace":case "value":return this.$[a];case "style":return this.$.style.cssText;case "contenteditable":case "contentEditable":return this.$.attributes.getNamedItem("contentEditable").specified?this.$.getAttribute("contentEditable"):null}return this.$.getAttribute(a,2)}:a}(),getAttributes:function(a){var b=[m
+[32m+[m[32m{},c=this.$.attributes,g;a=CKEDITOR.tools.isArray(a)?a:[];for(g=0;g<c.length;g++)-1===CKEDITOR.tools.indexOf(a,c[g].name)&&(b[c[g].name]=c[g].value);return b},getChildren:function(){return new CKEDITOR.dom.nodeList(this.$.childNodes)},getComputedStyle:document.defaultView&&document.defaultView.getComputedStyle?function(a){var b=this.getWindow().$.getComputedStyle(this.$,null);return b?b.getPropertyValue(a):""}:function(a){return this.$.currentStyle[CKEDITOR.tools.cssStyleToDomStyle(a)]},getDtd:function(){var a=[m
+[32m+[m[32mCKEDITOR.dtd[this.getName()];this.getDtd=function(){return a};return a},getElementsByTag:CKEDITOR.dom.document.prototype.getElementsByTag,getTabIndex:function(){var a=this.$.tabIndex;return 0!==a||CKEDITOR.dtd.$tabIndex[this.getName()]||0===parseInt(this.getAttribute("tabindex"),10)?a:-1},getText:function(){return this.$.textContent||this.$.innerText||""},getWindow:function(){return this.getDocument().getWindow()},getId:function(){return this.$.id||null},getNameAtt:function(){return this.$.name||[m
+[32m+[m[32mnull},getName:function(){var a=this.$.nodeName.toLowerCase();if(CKEDITOR.env.ie&&8>=document.documentMode){var b=this.$.scopeName;"HTML"!=b&&(a=b.toLowerCase()+":"+a)}this.getName=function(){return a};return this.getName()},getValue:function(){return this.$.value},getFirst:function(a){var b=this.$.firstChild;(b=b&&new CKEDITOR.dom.node(b))&&a&&!a(b)&&(b=b.getNext(a));return b},getLast:function(a){var b=this.$.lastChild;(b=b&&new CKEDITOR.dom.node(b))&&a&&!a(b)&&(b=b.getPrevious(a));return b},getStyle:function(a){return this.$.style[CKEDITOR.tools.cssStyleToDomStyle(a)]},[m
+[32m+[m[32mis:function(){var a=this.getName();if("object"==typeof arguments[0])return!!arguments[0][a];for(var b=0;b<arguments.length;b++)if(arguments[b]==a)return!0;return!1},isEditable:function(a){var b=this.getName();return this.isReadOnly()||"none"==this.getComputedStyle("display")||"hidden"==this.getComputedStyle("visibility")||CKEDITOR.dtd.$nonEditable[b]||CKEDITOR.dtd.$empty[b]||this.is("a")&&(this.data("cke-saved-name")||this.hasAttribute("name"))&&!this.getChildCount()?!1:!1!==a?(a=CKEDITOR.dtd[b]||[m
+[32m+[m[32mCKEDITOR.dtd.span,!(!a||!a["#"])):!0},isIdentical:function(a){var b=this.clone(0,1);a=a.clone(0,1);b.removeAttributes(["_moz_dirty","data-cke-expando","data-cke-saved-href","data-cke-saved-name"]);a.removeAttributes(["_moz_dirty","data-cke-expando","data-cke-saved-href","data-cke-saved-name"]);if(b.$.isEqualNode)return b.$.style.cssText=CKEDITOR.tools.normalizeCssText(b.$.style.cssText),a.$.style.cssText=CKEDITOR.tools.normalizeCssText(a.$.style.cssText),b.$.isEqualNode(a.$);b=b.getOuterHtml();a=[m
+[32m+[m[32ma.getOuterHtml();if(CKEDITOR.env.ie&&9>CKEDITOR.env.version&&this.is("a")){var c=this.getParent();c.type==CKEDITOR.NODE_ELEMENT&&(c=c.clone(),c.setHtml(b),b=c.getHtml(),c.setHtml(a),a=c.getHtml())}return b==a},isVisible:function(){var a=(this.$.offsetHeight||this.$.offsetWidth)&&"hidden"!=this.getComputedStyle("visibility"),b,c;a&&CKEDITOR.env.webkit&&(b=this.getWindow(),!b.equals(CKEDITOR.document.getWindow())&&(c=b.$.frameElement)&&(a=(new CKEDITOR.dom.element(c)).isVisible()));return!!a},isEmptyInlineRemoveable:function(){if(!CKEDITOR.dtd.$removeEmpty[this.getName()])return!1;[m
+[32m+[m[32mfor(var a=this.getChildren(),b=0,c=a.count();b<c;b++){var g=a.getItem(b);if(g.type!=CKEDITOR.NODE_ELEMENT||!g.data("cke-bookmark"))if(g.type==CKEDITOR.NODE_ELEMENT&&!g.isEmptyInlineRemoveable()||g.type==CKEDITOR.NODE_TEXT&&CKEDITOR.tools.trim(g.getText()))return!1}return!0},hasAttributes:CKEDITOR.env.ie&&(CKEDITOR.env.ie7Compat||CKEDITOR.env.quirks)?function(){for(var a=this.$.attributes,b=0;b<a.length;b++){var c=a[b];switch(c.nodeName){case "class":if(this.getAttribute("class"))return!0;case "data-cke-expando":continue;[m
+[32m+[m[32mdefault:if(c.specified)return!0}}return!1}:function(){var a=this.$.attributes,b=a.length,c={"data-cke-expando":1,_moz_dirty:1};return 0<b&&(2<b||!c[a[0].nodeName]||2==b&&!c[a[1].nodeName])},hasAttribute:function(){function a(b){var d=this.$.attributes.getNamedItem(b);if("input"==this.getName())switch(b){case "class":return 0<this.$.className.length;case "checked":return!!this.$.checked;case "value":return b=this.getAttribute("type"),"checkbox"==b||"radio"==b?"on"!=this.$.value:!!this.$.value}return d?[m
+[32m+[m[32md.specified:!1}return CKEDITOR.env.ie?8>CKEDITOR.env.version?function(b){return"name"==b?!!this.$.name:a.call(this,b)}:a:function(a){return!!this.$.attributes.getNamedItem(a)}}(),hide:function(){this.setStyle("display","none")},moveChildren:function(a,b){var c=this.$;a=a.$;if(c!=a){var g;if(b)for(;g=c.lastChild;)a.insertBefore(c.removeChild(g),a.firstChild);else for(;g=c.firstChild;)a.appendChild(c.removeChild(g))}},mergeSi

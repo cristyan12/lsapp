@@ -15,6 +15,7 @@
         <li><a href="/about">About Us</a></li>
         <li><a href="/services">Services</a></li>
         <li><a href="/posts">Posts</a></li>
+        <li><a href="/posts/create">Create Post</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
