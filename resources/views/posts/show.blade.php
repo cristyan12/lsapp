@@ -7,7 +7,9 @@
 		{!! $post->body !!}
 	</div>
 	<hr>
-	<small>Written on {{ $post->created_at }}</small>
+	<p>
+		Written on {{ $post->created_at->diffForHumans() }} by <b>{{ $post->user->name }}</b>
+	</p>
 	<hr>
 	<a href="/posts/{{ $post->id }}/edit" class="btn btn-default">Edit</a>
 	
