@@ -28,7 +28,7 @@
             
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
-                @include('inc.autentication')
+                @include('inc.authentication')
             </ul>
         </div>
     </div>
