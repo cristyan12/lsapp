@@ -23,7 +23,9 @@
                 <li><a href="/about">About Us</a></li>
                 <li><a href="/services">Services</a></li>
                 <li><a href="/posts">Blog</a></li>
-                <li><a href="/posts/create">Create Post</a></li>
+                @if (! Auth::guest())
+                    <li><a href="/posts/create">Create Post</a></li>
+                @endif
             </ul>
             
             <!-- Right Side Of Navbar -->

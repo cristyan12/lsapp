@@ -48,13 +48,31 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            'cover_image' => 'image|nullable|max:1999'
         ]);
+
+        if ($request->hasFile('cover_image')) {
+            $originalFileName = $request->file('cover_image')->getClientOriginalName();
+
+            $justFileName = pathinfo($originalFileName, PATHINFO_FILENAME);
+
+            $extensionFile = $request->file('cover_image')->getClientOriginalExtension();
+
+            $fileNameToStore = $justFileName.'_'.time().'.'.$extensionFile;
+
+            $path = $request->file('cover_image')->storeAs(
+                'public/cover_images', $fileNameToStore
+            );
+        } else {
+            $fileNameToStore = 'noimage.png';
+        }
 
         $post = new Post;
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->user_id = auth()->user()->id;
+        $post->cover_image = $fileNameToStore;
         $post->save();
 
         return redirect('/posts')->with('success', 'Post created');
