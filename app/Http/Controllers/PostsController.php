@@ -65,7 +65,7 @@ class PostsController extends Controller
                 'public/cover_images', $fileNameToStore
             );
         } else {
-            $fileNameToStore = 'noimage.png';
+            $fileNameToStore = 'noimage.jpg';
         }
 
         $post = new Post;
@@ -143,8 +143,12 @@ class PostsController extends Controller
             return redirect('/posts')->with('error', 'Unauthorized page');
         }
         
-        $post->delete();
+        if ($post->cover_image != 'noimage.jpg') {
+            \Storage::delete('public/cover_images/'.$post->cover_image);    
+        }
 
+        $post->delete();
+        
         return redirect('/posts')->with('success', 'Post Deleted');
     }
 }
